@@ -109,7 +109,6 @@ class surrogate (
     ensure   => $repo_version,
     provider => git,
     source   => $repo_location,
-    require  => Package['git'],
   }
 
   #Generate file link for surrogate lib
