@@ -83,12 +83,10 @@ class surrogate (
   validate_re($weeks_retention, '^\d+$')
   validate_re($months_retention, '^\d+$')
   validate_re($monthly_day, '^\d+$')
-  validate_string([
-    $repo_location,
-    $backup_user,
-    $backup_pass,
-    $auto_rotate,
-  ])
+  validate_string($repo_location)
+  validate_string($backup_user)
+  validate_string($backup_pass)
+  validate_string($auto_rotate)
 
   #Install repo of version, or set as absent
   $repo_version = $ensure ? {
