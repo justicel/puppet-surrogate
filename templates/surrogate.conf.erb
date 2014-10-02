@@ -1,0 +1,125 @@
+#
+# This is the main Surrogate configuration file. It contains configuration directives, 
+# some of which are updated automatically during installation. See github surrogate wiki
+# for detailed information.
+
+# allow undef. vars
+set +u
+
+#
+### MySQL Configuration 
+#
+
+# mysql_socket - Socket used to connect to MySQL server
+mysql_socket=<%= @mysql_socket %>
+
+# mysql_instances description
+mysql_instances=3306
+
+# MySQL credentials used to connect to the database server
+mysql_user=<%= @backup_user %>
+mysql_pass=<%= @backup_pass %>
+
+# mysql_data_path - datadir in my.cnf
+mysql_data_path=<%= @mysql_data %>
+
+# mysql_log_path description
+mysql_log_path=<%= @mysql_log %>
+
+# backup_directory defines where Surrogate backups are stored
+backup_directory=<%= @backup_folder %>
+
+#
+### Surrogate Configuration
+#
+
+# my_root defines where surrogate libs are installed
+my_root=<%= @surrogate_home %>
+log_folder="$my_root/log"
+
+#auto-rotation preference. set to true to have old backups autorotated whenever backups are made.
+auto_rotate=<%= @auto_rotate %>
+
+# data retention
+daily_retention="<%= @days_retention %>" # in days
+weekly_retention="<%= @weeks_retention.to_i * 7 %>" # in days
+monthly_retention="<%= @months_retention.to_i * 30 %>" # in days
+
+# weekly_backup - day of week to take weekly backup, accepted values: Mon Tue Wed Thu Fri Sat
+# used by determine_full_backup_path during backup runs
+weekly_backup="<%= @weekly_backup %>"
+
+# monthly_backup - day of month to take monthly backup.
+monthly_backup="<%= @monthly_backup %>" # Expected format returned from date +%d
+
+# Gzip options (if mysqldump used)
+gzip_opts=""
+
+# Mysqldump options (if used)
+dump_opts="--single-transaction"
+
+########
+#Surrogate non-user configuration below
+########
+
+# digest - default digest file location
+digest="$backup_directory/.digest"
+
+# mysql_collapse_path description
+mysql_collapse_path="$backup_directory/tmp"
+
+# temp directory for staging data 
+mysql_sanity_path="$backup_directory/sanity"
+
+# surr_full/inc_status - files to write exit codes to after backup runs (for monitoring integration)
+surr_full_status="$backup_directory/backup-full.status"
+surr_inc_status="$backup_directory/backup-inc.status"
+
+# What to output to surr_full_status and surr_inc_status on failure / success
+surr_success_msg='status=0'
+surr_fail_msg='status=1'
+
+# Backup dirs
+inc_backup_path="$backup_directory/$today/inc_$now"
+
+if [ -f $digest ]; then
+  last_backup=$(tail -n1 $digest)
+else
+  touch $digest
+  last_backup=''
+fi
+
+active_backup="$backup_directory/active_restore"
+active_incremental="$backup_directory/active_incremental"
+backup_filename="collapsed_$(date +%Y-%m-%d_%H%M)"
+
+# Command used for full backups
+full_backup="innobackupex --ibbackup=xtrabackup --parallel=8 --user=$mysql_user --password=$mysql_pass --no-timestamp --compress --compress-threads=8 --socket=$socket --defaults-group="mysqld$instance" $full_backup_path"
+
+# Command used for incremental backups
+inc_backup="innobackupex --ibbackup=xtrabackup --parallel=8 --user=$mysql_user --password=$mysql_pass --no-timestamp --compress --compress-threads=8 --incremental --incremental-basedir=$last_backup --socket=$socket $inc_backup_path"
+
+# Command used for mysqldumps
+dump_backup="mysqldump -u $mysql_user -p${mysql_pass} -S $mysql_socket $dump_opts $database | gzip $gzip_opts > $full_backup_path/$database.gz"
+
+# Commands used for restores
+full_prep="innobackupex --ibbackup=xtrabackup --parallel=4 --user=$mysql_user --password=$mysql_pass --apply-log --socket=$socket --redo-only $active_backup"
+inc_restore="innobackupex --ibbackup=xtrabackup --parallel=4 --user=$mysql_user --password=$mysql_pass --apply-log --redo-only $active_backup --socket=$socket --incremental-dir=$active_incremental"
+log_apply="innobackupex --ibbackup=xtrabackup --parallel=4 --user=$mysql_user --password=$mysql_pass --socket=$socket --apply-log $active_backup"
+file_restore="innobackupex --ibbackup=xtrabackup --user=$mysql_user --password=$mysql_pass --socket=$socket --copy-back $active_backup"
+
+# time and date vars
+now=$(date +%Y-%m-%d_%H%M)
+today=daily/$(date +%a)
+week=weekly/$(date +%Y-%m)
+month=monthly/$(date +%b)
+
+# Surrogate log files (temporarily unused)
+logfile_f="$log_folder/full_$now"
+logfile_i="$log_folder/incremental_$now"
+logfile_r="$log_folder/restore_$now"
+logfile_c="$log_folder/collapse_$now"
+log="$log_folder/surrogate.log"
+
+# Disallow undef vars (for sourcing from within Surrogate)
+set -u
