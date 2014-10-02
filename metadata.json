@@ -15,6 +15,10 @@
     {
       "name": "puppetlabs-vcsrepo",
       "version_range": ">= 1.0.0"
+    },
+    {
+      "name": "continuent-percona_repo",
+      "version_range": ">= 0.2.0"
     }
   ]
 }
