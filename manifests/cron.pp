@@ -14,7 +14,7 @@ class surrogate::cron (
   validate_re($backup_day, '^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)$')
 
   #Be safe and remove backup day from diff days if someone still added it
-  $diff_days_true = join(delete($diff_days, $backup_day), ',')
+  $diff_days_true = delete($diff_days, $backup_day)
 
   #Enable cron for surrogate
   cron { 'surrogate_full':
