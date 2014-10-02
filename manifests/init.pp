@@ -136,7 +136,7 @@ class surrogate (
   #Build the surrogate configuration file
   file { '/etc/surrogate/surrogate.conf':
     ensure  => present,
-    source  => 'puppet:///modules/surrogate/surrogate.conf.erb',
+    content => template('surrogate/surrogate.conf.erb'),
     require => File['/etc/surrogate'],
   }
 
