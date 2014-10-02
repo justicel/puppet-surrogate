@@ -51,6 +51,7 @@ class surrogate (
   $months_retention = '6',
   $weekly_day       = 'Sun',
   $monthly_day      = '1',
+  $schedule_backups = true,
   $diff_backups     = true,
   $backup_hour      = '3',
   $backup_minute    = '0',
@@ -59,6 +60,11 @@ class surrogate (
   $mysql_log        = $::surrogate::params::mysql_log,
   $mysql_socket     = $::surrogate::params::mysql_socket,
 ) inherits ::surrogate::params {
+
+  #Include cron scheduling of jobs
+  if $schedule_backups {
+    include ::surrogate::cron
+  }
 
   #Validate variables
   validate_absolute_path([
@@ -71,7 +77,7 @@ class surrogate (
     $backup_folder
   ])
   validate_array($diff_days)
-  validate_bool($diff_backups)
+  validate_bool([$diff_backups, $schedule_backups])
   validate_re($ensure, '^(present|absent)$')
   validate_re($version, '^(present|latest|absent)$')
   validate_re($auto_rotate, '^(true|false)$')
