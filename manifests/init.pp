@@ -89,7 +89,7 @@ class surrogate (
       $months_retention,
       $monthly_day,
     ],
-    '^[0-9]*$',
+    '^\d+$',
   )
   validate_string([
     $repo_location,

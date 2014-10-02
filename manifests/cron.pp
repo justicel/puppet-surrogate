@@ -9,7 +9,7 @@ class surrogate::cron (
   validate_array($diff_days)
   validate_bool($diff_backups)
   validate_re($ensure, '^(present|absent)$')
-  validate_re([$backup_hour, $backup_minute], '^[0-9]*$')
+  validate_re([$backup_hour, $backup_minute], '^\d+$')
   validate_re($backup_day, '^(Sun|Mon|Tue|Wed|Thu|Fri|Sat)$')
 
   #Be safe and remove backup day from diff days if someone still added it
