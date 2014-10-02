@@ -17,8 +17,9 @@ mysql_socket=<%= @mysql_socket %>
 mysql_instances=3306
 
 # MySQL credentials used to connect to the database server
-mysql_user=<%= @backup_user %>
-mysql_pass=<%= @backup_pass %>
+mysql_user='<%= @backup_user %>'
+mysql_pass='<%= @backup_pass %>'
+
 
 # mysql_data_path - datadir in my.cnf
 mysql_data_path=<%= @mysql_data %>
