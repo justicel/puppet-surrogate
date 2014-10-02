@@ -99,13 +99,13 @@ class surrogate (
   ensure_packages(['percona-xtrabackup', 'qpress'], { ensure => latest })
 
   #Create /usr/local/lib and /usr/backups as needed
-  ensure_resource('file', ['/usr/local/lib', '/usr/backups'], {
+  ensure_resource('file', ['/usr/local/lib', '/var/backups'], {
     'ensure' => 'directory'
   })
   #Create backup folder as needed
   ensure_resource('file', $backup_folder, {
     'ensure'  => 'directory',
-    'require' => File['/usr/backups'],
+    'require' => File['/var/backups'],
   })
 
   #Check out repo for surrogate
