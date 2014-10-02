@@ -95,19 +95,19 @@ active_incremental="$backup_directory/active_incremental"
 backup_filename="collapsed_$(date +%Y-%m-%d_%H%M)"
 
 # Command used for full backups
-full_backup="innobackupex --ibbackup=xtrabackup --parallel=8 --user=$mysql_user --password=$mysql_pass --no-timestamp --compress --compress-threads=8 --socket=$socket --defaults-group="mysqld$instance" $full_backup_path"
+full_backup="innobackupex --ibbackup=xtrabackup --parallel=8 --user='$mysql_user' --password='$mysql_pass' --no-timestamp --compress --compress-threads=8 --socket=$socket --defaults-group="mysqld$instance" $full_backup_path"
 
 # Command used for incremental backups
-inc_backup="innobackupex --ibbackup=xtrabackup --parallel=8 --user=$mysql_user --password=$mysql_pass --no-timestamp --compress --compress-threads=8 --incremental --incremental-basedir=$last_backup --socket=$socket $inc_backup_path"
+inc_backup="innobackupex --ibbackup=xtrabackup --parallel=8 --user='$mysql_user' --password='$mysql_pass' --no-timestamp --compress --compress-threads=8 --incremental --incremental-basedir=$last_backup --socket=$socket $inc_backup_path"
 
 # Command used for mysqldumps
-dump_backup="mysqldump -u $mysql_user -p${mysql_pass} -S $mysql_socket $dump_opts $database | gzip $gzip_opts > $full_backup_path/$database.gz"
+dump_backup="mysqldump -u'$mysql_user' -p'${mysql_pass}' -S $mysql_socket $dump_opts $database | gzip $gzip_opts > $full_backup_path/$database.gz"
 
 # Commands used for restores
-full_prep="innobackupex --ibbackup=xtrabackup --parallel=4 --user=$mysql_user --password=$mysql_pass --apply-log --socket=$socket --redo-only $active_backup"
-inc_restore="innobackupex --ibbackup=xtrabackup --parallel=4 --user=$mysql_user --password=$mysql_pass --apply-log --redo-only $active_backup --socket=$socket --incremental-dir=$active_incremental"
-log_apply="innobackupex --ibbackup=xtrabackup --parallel=4 --user=$mysql_user --password=$mysql_pass --socket=$socket --apply-log $active_backup"
-file_restore="innobackupex --ibbackup=xtrabackup --user=$mysql_user --password=$mysql_pass --socket=$socket --copy-back $active_backup"
+full_prep="innobackupex --ibbackup=xtrabackup --parallel=4 --user='$mysql_user' --password='$mysql_pass' --apply-log --socket=$socket --redo-only $active_backup"
+inc_restore="innobackupex --ibbackup=xtrabackup --parallel=4 --user='$mysql_user' --password='$mysql_pass' --apply-log --redo-only $active_backup --socket=$socket --incremental-dir=$active_incremental"
+log_apply="innobackupex --ibbackup=xtrabackup --parallel=4 --user='$mysql_user' --password='$mysql_pass' --socket=$socket --apply-log $active_backup"
+file_restore="innobackupex --ibbackup=xtrabackup --user='$mysql_user' --password='$mysql_pass' --socket=$socket --copy-back $active_backup"
 
 # time and date vars
 now=$(date +%Y-%m-%d_%H%M)
