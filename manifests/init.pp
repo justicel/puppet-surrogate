@@ -79,15 +79,10 @@ class surrogate (
   validate_re($version, '^(present|latest|absent)$')
   validate_re($auto_rotate, '^(true|false)$')
   validate_re($weekly_day, '^(Sun|Mon|Tue|Wed|Thu|Fri|Sat)$')
-  validate_re(
-    [
-      $days_retention,
-      $weeks_retention,
-      $months_retention,
-      $monthly_day,
-    ],
-    '^\d+$',
-  )
+  validate_re($days_retention, '^\d+$')
+  validate_re($weeks_retention, '^\d+$')
+  validate_re($months_retention, '^\d+$')
+  validate_re($monthly_day, '^\d+$')
   validate_string([
     $repo_location,
     $backup_user,
