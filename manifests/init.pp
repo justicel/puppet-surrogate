@@ -49,17 +49,18 @@ class surrogate (
   $days_retention   = '7',
   $weeks_retention  = '4',
   $months_retention = '6',
-  $weekly_day       = 'Sun',
+  $weekly_day       = 'Sunday',
   $monthly_day      = '1',
   $schedule_backups = true,
   $diff_backups     = true,
   $backup_hour      = '3',
   $backup_minute    = '0',
-  $diff_days        = ['Mon','Tue','Wed','Thu','Fri','Sat'],
+  $diff_days        = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
   $mysql_data       = $::surrogate::params::mysql_data,
   $mysql_log        = $::surrogate::params::mysql_log,
   $mysql_socket     = $::surrogate::params::mysql_socket,
 ) inherits ::surrogate::params {
+  include percona_repo
 
   #Include cron scheduling of jobs
   if $schedule_backups {
@@ -78,7 +79,7 @@ class surrogate (
   validate_re($ensure, '^(present|absent)$')
   validate_re($version, '^(present|latest|absent)$')
   validate_re($auto_rotate, '^(true|false)$')
-  validate_re($weekly_day, '^(Sun|Mon|Tue|Wed|Thu|Fri|Sat)$')
+  validate_re($weekly_day, '^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)$')
   validate_re($days_retention, '^\d+$')
   validate_re($weeks_retention, '^\d+$')
   validate_re($months_retention, '^\d+$')

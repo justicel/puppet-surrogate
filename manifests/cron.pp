@@ -11,7 +11,7 @@ class surrogate::cron (
   validate_re($ensure, '^(present|absent)$')
   validate_re($backup_hour, '^\d+$')
   validate_re($backup_minute, '^\d+$')
-  validate_re($backup_day, '^(Sun|Mon|Tue|Wed|Thu|Fri|Sat)$')
+  validate_re($backup_day, '^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)$')
 
   #Be safe and remove backup day from diff days if someone still added it
   $diff_days_true = join(delete($diff_days, $backup_day), ',')
