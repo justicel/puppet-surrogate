@@ -51,7 +51,7 @@ class surrogate (
   $weeks_retention  = '4',
   $months_retention = '6',
   $weekly_day       = 'Sunday',
-  $monthly_day      = '1',
+  $monthly_day      = '01',
   $schedule_backups = true,
   $diff_backups     = true,
   $backup_hour      = '3',

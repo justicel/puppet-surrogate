@@ -48,10 +48,10 @@ monthly_retention="<%= @months_retention.to_i * 30 %>" # in days
 
 # weekly_backup - day of week to take weekly backup, accepted values: Mon Tue Wed Thu Fri Sat
 # used by determine_full_backup_path during backup runs
-weekly_backup="<%= @weekly_backup %>"
+weekly_backup="<%= @weekly_day %>"
 
 # monthly_backup - day of month to take monthly backup.
-monthly_backup="<%= @monthly_backup %>" # Expected format returned from date +%d
+monthly_backup="<%= @monthly_day %>" # Expected format returned from date +%d
 
 # Gzip options (if mysqldump used)
 gzip_opts=""
