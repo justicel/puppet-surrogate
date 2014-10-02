@@ -108,6 +108,18 @@ class surrogate (
     'ensure'  => 'directory',
     'require' => File['/var/backups'],
   })
+  #Generate daily/weekly/monthly folders
+  ensure_resource('file',
+    [
+      "${backup_folder}/daily",
+      "${backup_folder}/weekly",
+      "${backup_folder}/monthly",
+    ],
+    {
+      'ensure'  => 'directory',
+      'require' => File[$backup_folder],
+    }
+  )
 
   #Check out repo for surrogate
   vcsrepo { $repo_cache:
