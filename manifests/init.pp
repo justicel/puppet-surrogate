@@ -71,9 +71,7 @@ class surrogate (
     $surrogate_home,
     $surrogate_exec,
     $repo_cache,
-    $mysql_socket,
     $mysql_data,
-    $mysql_log,
     $backup_folder
   ])
   validate_array($diff_days)
