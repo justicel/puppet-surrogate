@@ -1,10 +1,10 @@
 class surrogate::cron (
-  $ensure        = present,
-  $diff_backups  = true,
-  $backup_hour   = 3,
-  $backup_minute = 0,
-  $backup_day    = 'Sun',
-  $diff_days     = ['Mon','Tue','Wed','Thu','Fri','Sat'],
+  $ensure        = $::surrogate::ensure,
+  $diff_backups  = $::surrogate::diff_backups,
+  $backup_hour   = $::surrogate::backup_hour,
+  $backup_minute = $::surrogate::backup_minute,
+  $backup_day    = $::surrogate::weekly_day,
+  $diff_days     = $::surrogate::diff_days,
 ) {
   validate_array($diff_days)
   validate_bool($diff_backups)

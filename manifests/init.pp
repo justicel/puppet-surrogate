@@ -42,11 +42,8 @@ class surrogate (
   $surrogate_home   = '/usr/local/lib/surrogate',
   $surrogate_exec   = '/usr/local/bin/surrogate',
   $repo_cache       = '/usr/local/src/surrogate',
-  $mysql_socket     = $::surrogate::params::mysql_socket,
   $backup_user      = '',
   $backup_pass      = '',
-  $mysql_data       = $::surrogate::params::mysql_data,
-  $mysql_log        = $::surrogate::params::mysql_log,
   $backup_folder    = '/var/backups/mysql',
   $auto_rotate      = 'true',
   $days_retention   = '7',
@@ -54,6 +51,13 @@ class surrogate (
   $months_retention = '6',
   $weekly_day       = 'Sun',
   $monthly_day      = '1',
+  $diff_backups     = true,
+  $backup_hour      = '3',
+  $backup_minute    = '0',
+  $diff_days        = ['Mon','Tue','Wed','Thu','Fri','Sat'],
+  $mysql_data       = $::surrogate::params::mysql_data,
+  $mysql_log        = $::surrogate::params::mysql_log,
+  $mysql_socket     = $::surrogate::params::mysql_socket,
 ) inherits ::surrogate::params {
 
   #Validate variables
@@ -66,6 +70,8 @@ class surrogate (
     $mysql_log,
     $backup_folder
   ])
+  validate_array($diff_days)
+  validate_bool($diff_backups)
   validate_re($ensure, '^(present|absent)$')
   validate_re($version, '^(present|latest|absent)$')
   validate_re($auto_rotate, '^(true|false)$')
