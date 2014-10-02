@@ -36,7 +36,7 @@ backup_directory=<%= @backup_folder %>
 
 # my_root defines where surrogate libs are installed
 my_root=<%= @surrogate_home %>
-log_folder="$my_root/log"
+log_folder=<%= @logfile_path %>
 
 #auto-rotation preference. set to true to have old backups autorotated whenever backups are made.
 auto_rotate=<%= @auto_rotate %>

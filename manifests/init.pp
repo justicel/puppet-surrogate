@@ -41,6 +41,7 @@ class surrogate (
   $repo_location    = 'https://github.com/justicel/surrogate.git',
   $xtraback_config  = template('surrogate/xtrabackup.conf.erb'),
   $surrogate_home   = '/usr/local/lib/surrogate',
+  $logfile_path     = '/usr/local/lib/surrogate/log',
   $surrogate_exec   = '/usr/local/bin/surrogate',
   $repo_cache       = '/usr/local/src/surrogate',
   $backup_user      = '',
@@ -74,6 +75,7 @@ class surrogate (
   validate_absolute_path($repo_cache)
   validate_absolute_path($mysql_data)
   validate_absolute_path($backup_folder)
+  validate_absolute_path($logfile_path)
   validate_array($diff_days)
   validate_bool($diff_backups)
   validate_bool($schedule_backups)
