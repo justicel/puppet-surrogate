@@ -94,9 +94,6 @@ class surrogate (
     default => absent
   }
 
-  #Install git as needed
-  ensure_packages(['git'])
-
   #Create /usr/local/lib and /usr/backups as needed
   ensure_resource('file', ['/usr/local/lib', '/usr/backups'], {
     'ensure' => 'directory'
