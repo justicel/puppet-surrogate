@@ -39,6 +39,7 @@ class surrogate (
   $ensure           = present,
   $version          = latest,
   $repo_location    = 'https://github.com/justicel/surrogate.git',
+  $xtraback_config  = template('surrogate/xtrabackup.conf.erb'),
   $surrogate_home   = '/usr/local/lib/surrogate',
   $surrogate_exec   = '/usr/local/bin/surrogate',
   $repo_cache       = '/usr/local/src/surrogate',
@@ -137,6 +138,12 @@ class surrogate (
   file { '/etc/surrogate/surrogate.conf':
     ensure  => present,
     content => template('surrogate/surrogate.conf.erb'),
+    require => File['/etc/surrogate'],
+  }
+  #Add extra configurations for xtrabackup
+  file { '/etc/surrogate/xtrabackup.conf':
+    ensure  => present,
+    content => $xtraback_config,
     require => File['/etc/surrogate'],
   }
 
