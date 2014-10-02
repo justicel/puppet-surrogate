@@ -67,13 +67,11 @@ class surrogate (
   }
 
   #Validate variables
-  validate_absolute_path([
-    $surrogate_home,
-    $surrogate_exec,
-    $repo_cache,
-    $mysql_data,
-    $backup_folder
-  ])
+  validate_absolute_path($surrogate_home)
+  validate_absolute_path($surrogate_exec)
+  validate_absolute_path($repo_cache)
+  validate_absolute_path($mysql_data)
+  validate_absolute_path($backup_folder)
   validate_array($diff_days)
   validate_bool([$diff_backups, $schedule_backups])
   validate_re($ensure, '^(present|absent)$')
