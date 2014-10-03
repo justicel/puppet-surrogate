@@ -1,5 +1,5 @@
 {
-  "name": "puppet-surrogate",
+  "name": "jlondon-surrogate",
   "version": "1.0.0",
   "author": "Justice London",
   "summary": "Puppet module to install Surrogate, an xtrabackup script",
