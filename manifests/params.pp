@@ -1,3 +1,18 @@
+# == Class: surrogate::params
+#
+# The parameters class for surrogate. Currently grabs OS
+# variables and supports RedHat or Debian. Further OS
+# support can be added in the future or by submitting a
+# pull request!
+#
+# === Authors
+#
+# Justice London <jlondon@syrussystems.com>
+#
+# === Copyright
+#
+# Copyright 2014 Justice London
+#
 class surrogate::params {
 
   case $::osfamily {

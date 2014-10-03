@@ -1,4 +1,4 @@
-# surrogate
+# Puppet Surrogate
 
 #### Table of Contents
 
@@ -6,7 +6,6 @@
 2. [Module Description - What the module does and why it is useful](#module-description)
 3. [Setup - The basics of getting started with surrogate](#setup)
     * [What surrogate affects](#what-surrogate-affects)
-    * [Setup requirements](#setup-requirements)
     * [Beginning with surrogate](#beginning-with-surrogate)
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
@@ -15,65 +14,93 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
+This module allows you to install a modified version of Surrogate backup.
+Surrogate is an xtrabackup based script for backing up mysql databases in a hot-backup
+fashion. This means no downtime or slowdown for your database server!
+
+Support most debian and redhat based Linux distributions and any 5.5+ version of MySQL!
+
+For support please open an issue through the project: https://github.com/justicel/puppet-surrogate/issues
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology
-the module integrates with and what that integration enables. This section
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?"
+Implements a custom version of Surrogate backup, which was originally written from:
+    
+    https://github.com/sixninetynine/surrogate
 
-If your module has a range of functionality (installation, configuration,
-management, etc.) this is the time to mention it.
+Additionally uses Percona Innobackup/Xtrabackup ( http://www.percona.com/doc/percona-xtrabackup/2.2/ ).
+Xtrabackup allows you to do no downtime/slowdown backups for current version MySQL servers, regardless
+of if they are based upon Percona code or not.
 
 ## Setup
 
 ### What surrogate affects
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
+* Install Surrogate scripts
+* Installs xtrabackup and qpress (qpress used for backup compression)
+* Needs a local mysql server to run backups.
 
 ### Beginning with surrogate
 
-The very basic steps needed for a user to get the module up and running.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+Module setup simply requires installation on a puppet server or local machine with a copy of puppetlabs-stdlib
+and vcsrepo modules. Additionally you'll need the percona repository, but that is installed as needed by the module.
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+Setup is very simple. Example below for a very basic installation (You'll really want to read through full options):
+
+    node 'mysql-slave' {
+      class { 'surrogate':
+        backup_user   => 'backup_user',
+        backup_pass   => 'mysecurepassword',
+        backup_folder => '/var/backups/mysql',
+      }
+    }
+
+Additionally you will need to create a mysql user (DON'T USE ROOT!!!!) for backups. The backup user needs the following perms:
+
+    SELECT
+    RELOAD
+    SHOW DATABASES
+    LOCK TABLES
+    SHOW VIEW
+    REPLICATION CLIENT
+
+You can create a user like this as needed:
+
+    use mysql;
+    GRANT SELECT, RELOAD, SHOW DATABASES, LOCK TABLES, SHOW VIEW, REPLICATION CLIENT on *.* to 'dbbackup'@'localhost' IDENTIFIED BY '<password>';
+
+Then make sure to run a flush privileges:
+
+    flush privileges;
+
+Your sql server should now be ready to go
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+* `surrogate`: Main installation class which governs configuration variables and source download/install
+* `surrogate::cron`: Class to build out all of the cron-jobs for backups. Generally not client facing.
+* `surrogate::params`: Parameters for OS specific configuration variables.
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+Currently known to support:
+
+* Ubuntu Precise/Trusty
+* Debian Woody/Jessie
+* Redhat 6/7
+* CentOS 6/7
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
+Feel free to modify, fork or otherwise the module but please keep attribution for the original code to myself:
 
-## Release Notes/Contributors/Etc **Optional**
+Copyright 2014, Justice London <jlondon@syrussystems.com>
 
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You may also add any additional sections you feel are
-necessary or important to include here. Please use the `## ` header.
+## Release Notes
+
+There is still some future work to be done:
+* Enable .my.cnf support instead of only user/password
+* Fix the underlying code for Surrogate to be cleaner/more modular (It works fine though)
+* Build tests
