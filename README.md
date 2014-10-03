@@ -26,7 +26,7 @@ For support please open an issue through the project: https://github.com/justice
 
 Implements a custom version of Surrogate backup, which was originally written from:
     
-    https://github.com/sixninetynine/surrogate
+https://github.com/sixninetynine/surrogate
 
 Additionally uses Percona Innobackup/Xtrabackup ( http://www.percona.com/doc/percona-xtrabackup/2.2/ ).
 Xtrabackup allows you to do no downtime/slowdown backups for current version MySQL servers, regardless

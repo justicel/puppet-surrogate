@@ -1,12 +1,13 @@
 {
   "name": "jlondon-surrogate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Justice London",
   "summary": "Puppet module to install Surrogate, an xtrabackup script",
   "license": "Apache 2.0",
   "source": "https://github.com/justicel/puppet-surrogate.git",
   "project_page": "https://github.com/justicel/puppet-surrogate",
   "issues_url": "https://github.com/justicel/puppet-surrogate/issues",
+  "tags": [ "mysql", "xtrabackup", "innobackupex", "percona", "debian", "ubuntu", "redhat", "centos", "backup" ],
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
@@ -19,6 +20,50 @@
     {
       "name": "continuent-percona_repo",
       "version_range": ">= 0.2.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "5",
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "14.04"
+      ]
     }
   ]
 }
