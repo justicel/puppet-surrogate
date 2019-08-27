@@ -95,10 +95,10 @@ active_incremental="$backup_directory/active_incremental"
 backup_filename="collapsed_$(date +%Y-%m-%d_%H%M)"
 
 # Command used for full backups
-full_backup="innobackupex --ibbackup=xtrabackup --parallel=8 --user='$mysql_user' --password='$mysql_pass' --no-timestamp --compress --compress-threads=8 --socket=$socket --defaults-group="mysqld$instance" $full_backup_path"
+full_backup="innobackupex --ibbackup=xtrabackup --parallel=8 --user='$mysql_user' --password='$mysql_pass' --no-lock --no-timestamp --compress --compress-threads=8 --socket=$socket --defaults-group="mysqld$instance" $full_backup_path"
 
 # Command used for incremental backups
-inc_backup="innobackupex --ibbackup=xtrabackup --parallel=8 --user='$mysql_user' --password='$mysql_pass' --no-timestamp --compress --compress-threads=8 --incremental --incremental-basedir=$last_backup --socket=$socket $inc_backup_path"
+inc_backup="innobackupex --ibbackup=xtrabackup --parallel=8 --user='$mysql_user' --password='$mysql_pass' --no-lock --no-timestamp --compress --compress-threads=8 --incremental --incremental-basedir=$last_backup --socket=$socket $inc_backup_path"
 
 # Command used for mysqldumps
 dump_backup="mysqldump -u'$mysql_user' -p'${mysql_pass}' -S $mysql_socket $dump_opts $database | gzip $gzip_opts > $full_backup_path/$database.gz"

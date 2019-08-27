@@ -1,3 +1,10 @@
+2019-09-18 - Version 1.0.2
+
+Summary: Fix locking issues with large backups
+
+Bugfixes:
+- Default to no-lock option for backups to avoid locking issues with really large backups
+
 2014-10-02 - Version 1.0.1 
 
 Summary: Small documentation fixes
